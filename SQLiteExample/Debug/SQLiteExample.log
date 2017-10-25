@@ -1,0 +1,6 @@
+﻿  sqlite3.c
+  shell.c
+  Generating Code...
+LINK : warning LNK4067: ambiguous entry point; selected 'mainCRTStartup'
+  SQLiteExample.vcxproj -> E:\Streaming\SQLiteExample\Debug\SQLiteExample.exe
+  SQLiteExample.vcxproj -> E:\Streaming\SQLiteExample\Debug\SQLiteExample.pdb (Partial PDB)
