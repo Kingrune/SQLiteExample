@@ -139,7 +139,17 @@ void SetHighScore(int id, int score)
  */
 void DeleteHighScore(int id)
 {
-	// TODO:
+	char* errMsg = 0;
+	char sql[MAX_SQL_LENGTH];
+	sprintf_s(sql, "DELETE FROM highscores WHERE highscore_id = %d;", id);
+	if (sqlite3_exec(db, sql, SQLiteCallback, 0, &errMsg) != 0)
+	{
+		printf(errMsg);
+		printf("\n");
+		return;
+	}
+
+	printf("Deleted all entries from highscores with id(%d).\n", id);
 }
 
 /**
@@ -158,7 +168,7 @@ void RunSQLiteExample()
 {
 	std::string sql;
 
-	SetHighScore(1, 20);
+	DeleteHighScore(2);
 
 	int breakpoint = 0;
 }
