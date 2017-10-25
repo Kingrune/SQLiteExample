@@ -57,9 +57,9 @@ void CloseSQLiteDB()
 }
 
 /**
- * SQLiteCallback
- * Called from the sqlite3_exec method
- */
+* SQLiteCallback
+* Called from the sqlite3_exec method
+*/
 int SQLiteCallback(void *v, int argc, char** argv, char** azColName)
 {
 	for (int i = 0; i < argc; i++)
@@ -68,6 +68,25 @@ int SQLiteCallback(void *v, int argc, char** argv, char** azColName)
 	}
 	printf("\n");
 	return 0;
+}
+
+/**
+ * ExecuteSQLite
+ * Executes a sqlite query with the provided info
+ * Handles the errors
+ * @param sql - the sql to execute
+ */
+void ExecuteSQLite(char* sql)
+{
+	char* errMsg = 0;
+	int result = sqlite3_exec(db, sql, SQLiteCallback, 0, &errMsg);
+	CheckSQLiteErrors(result);
+	if (result != 0)
+	{
+		printf(errMsg);
+		printf("\n");
+		return;
+	}
 }
 
 /**
@@ -80,13 +99,7 @@ void AddHighScore(int id, int score)
 	char* errMsg = 0;
 	char sql[MAX_SQL_LENGTH];
 	sprintf_s(sql, "INSERT INTO highscores (highscore_id, score) VALUES (%d, %d);", id, score);
-	if (sqlite3_exec(db, sql, SQLiteCallback, 0, &errMsg) != 0)
-	{
-		printf(errMsg);
-		printf("\n");
-		return;
-	}
-
+	ExecuteSQLite(sql);
 	printf("Inserted id(%d) score(%d) into the db\n", id, score);
 }
 
@@ -100,14 +113,7 @@ void GetHighScores()
 	char* errMsg = 0;
 	char sql[MAX_SQL_LENGTH];
 	sprintf_s(sql, "SELECT * FROM highscores;");
-	if (sqlite3_exec(db, sql, SQLiteCallback, 0, &errMsg) != 0)
-	{
-		printf(errMsg);
-		printf("\n");
-		return;
-	}
-
-	int breakpoint = 0;
+	ExecuteSQLite(sql);
 }
 
 /**
@@ -122,13 +128,7 @@ void SetHighScore(int id, int score)
 	char* errMsg = 0;
 	char sql[MAX_SQL_LENGTH];
 	sprintf_s(sql, "UPDATE highscores SET score = %d WHERE highscore_id = %d;", score, id);
-	if (sqlite3_exec(db, sql, SQLiteCallback, 0, &errMsg) != 0)
-	{
-		printf(errMsg);
-		printf("\n");
-		return;
-	}
-
+	ExecuteSQLite(sql);
 	printf("Updated id(%d) to score(%d)\n", id, score);
 }
 
@@ -142,13 +142,7 @@ void DeleteHighScore(int id)
 	char* errMsg = 0;
 	char sql[MAX_SQL_LENGTH];
 	sprintf_s(sql, "DELETE FROM highscores WHERE highscore_id = %d;", id);
-	if (sqlite3_exec(db, sql, SQLiteCallback, 0, &errMsg) != 0)
-	{
-		printf(errMsg);
-		printf("\n");
-		return;
-	}
-
+	ExecuteSQLite(sql);
 	printf("Deleted all entries from highscores with id(%d).\n", id);
 }
 
@@ -168,9 +162,17 @@ void RunSQLiteExample()
 {
 	std::string sql;
 
-	DeleteHighScore(2);
+	AddHighScore(2, 10);
+	system("pause");
 
-	int breakpoint = 0;
+	GetHighScores();
+	system("pause");
+
+	SetHighScore(2, 15);
+	system("pause");
+
+	DeleteHighScore(2);
+	system("pause");
 }
 
 /**
