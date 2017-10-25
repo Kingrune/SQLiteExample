@@ -1,4 +1,6 @@
+#include <SQLite\sqlite3.h>
 
+sqlite3* db;
 
 
 
