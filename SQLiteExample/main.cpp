@@ -39,8 +39,58 @@ void CloseSQLiteDB()
 }
 
 /**
+ * AddHighScore
+ * Adds a high score to the database
+ * @param score - the score to add
+ */
+void AddHighScore(int id, int score)
+{
+	// TODO: 
+}
+
+/**
+ * GetHighScores
+ * Retrieves the high scores from
+ * the database
+ */
+void GetHighScores()
+{
+	// TODO:
+}
+
+/**
+ * SetHighScore
+ * Sets the high score of the provided 
+ * id to the new score
+ * @param id - the id of the highscore
+ * @param score - the new score
+ */
+void SetHighScore(int id, int score)
+{
+	// TODO:
+}
+
+/**
+ * DeleteHighScore
+ * Deletes a highscore with the provided id
+ * @param id - the id of the highscore to delete
+ */
+void DeleteHighScore(int id)
+{
+	// TODO:
+}
+
+/**
  * RunSQLiteExample
  * The example to run
+ * CRUD
+ * C - Create		INSERT
+ * R - Read			SELECT
+ * U - Update		UPDATE
+ * D - Delete		DELETE
+ * Using the highscores table:
+ * Create a high score, read high score, 
+ * update high score, and delete high score
  */
 void RunSQLiteExample()
 {
