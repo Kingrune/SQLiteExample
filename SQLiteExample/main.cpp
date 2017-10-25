@@ -7,6 +7,25 @@ sqlite3* db;
 
 const std::string DB_FILENAME = "exampledb.db";
 
+const int MAX_SQL_LENGTH = 200;
+
+/**
+ * CheckSQLiteErrors
+ * Checks for SQLite errors
+ * @param result - the result to check
+ * @return int - 0 if all good, 1 if error
+ */
+int CheckSQLiteErrors(int result)
+{
+	if (result)
+	{
+		printf("SQLite error: %s\n", sqlite3_errmsg(db));
+		return 1;
+	}
+
+	return 0;
+}
+
 /**
  * OpenSQLiteDB
  * Attempts to open a SQLite db from the provided
@@ -17,10 +36,9 @@ const std::string DB_FILENAME = "exampledb.db";
 bool OpenSQLiteDB(const std::string& filename)
 {
 	int result = sqlite3_open(filename.c_str(), &db);
-
-	if (result)
+	if (CheckSQLiteErrors(result) == 1)
 	{
-		printf("Failed to open sqlite db: %s\n", sqlite3_errmsg(db));
+		printf("Failed to open the sqlite database!\n");
 		return false;
 	}
 
@@ -39,13 +57,37 @@ void CloseSQLiteDB()
 }
 
 /**
+ * SQLiteCallback
+ * Called from the sqlite3_exec method
+ */
+int SQLiteCallback(void *v, int argc, char** argv, char** azColName)
+{
+	for (int i = 0; i < argc; i++)
+	{
+		printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+	}
+	printf("\n");
+	return 0;
+}
+
+/**
  * AddHighScore
  * Adds a high score to the database
  * @param score - the score to add
  */
 void AddHighScore(int id, int score)
 {
-	// TODO: 
+	char* errMsg = 0;
+	char sql[MAX_SQL_LENGTH];
+	sprintf_s(sql, "INSERT INTO highscores (highscore_id, score) VALUES (%d, %d);", id, score);
+	if (sqlite3_exec(db, sql, SQLiteCallback, 0, &errMsg) != 0)
+	{
+		printf(errMsg);
+		printf("\n");
+		return;
+	}
+
+	printf("Inserted id(%d) score(%d) into the db\n", id, score);
 }
 
 /**
@@ -96,11 +138,9 @@ void RunSQLiteExample()
 {
 	std::string sql;
 
-	// TODO: Create sql code here
+	AddHighScore(3, 5);
 
-	// TODO: Execute sql code here
-
-	// TODO: Check for errors
+	int breakpoint = 0;
 }
 
 /**
