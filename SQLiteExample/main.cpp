@@ -119,7 +119,17 @@ void GetHighScores()
  */
 void SetHighScore(int id, int score)
 {
-	// TODO:
+	char* errMsg = 0;
+	char sql[MAX_SQL_LENGTH];
+	sprintf_s(sql, "UPDATE highscores SET score = %d WHERE highscore_id = %d;", score, id);
+	if (sqlite3_exec(db, sql, SQLiteCallback, 0, &errMsg) != 0)
+	{
+		printf(errMsg);
+		printf("\n");
+		return;
+	}
+
+	printf("Updated id(%d) to score(%d)\n", id, score);
 }
 
 /**
@@ -148,8 +158,7 @@ void RunSQLiteExample()
 {
 	std::string sql;
 
-	AddHighScore(4, 4);
-	GetHighScores();
+	SetHighScore(1, 20);
 
 	int breakpoint = 0;
 }
