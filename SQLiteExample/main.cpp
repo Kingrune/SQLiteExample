@@ -7,6 +7,13 @@ sqlite3* db;
 
 const std::string DB_FILENAME = "exampledb.db";
 
+/**
+ * OpenSQLiteDB
+ * Attempts to open a SQLite db from the provided
+ * filename
+ * @Param filename - the name of the sqlite db
+ * @return bool - TRUE if successful, FALSE otherwise
+ */
 bool OpenSQLiteDB(const std::string& filename)
 {
 	int result = sqlite3_open(filename.c_str(), &db);
@@ -21,17 +28,34 @@ bool OpenSQLiteDB(const std::string& filename)
 	return true;
 }
 
+/**
+ * CloseSQLiteDB
+ * Closes the sqlite db
+ */
 void CloseSQLiteDB()
 {
 	printf("Closing SQLite db...\n");
 	sqlite3_close(db);
 }
 
+/**
+ * RunSQLiteExample
+ * The example to run
+ */
 void RunSQLiteExample()
 {
-	int breakpoint = 0;
+	std::string sql;
+
+	// TODO: Create sql code here
+
+	// TODO: Execute sql code here
+
+	// TODO: Check for errors
 }
 
+/**
+ * main
+ */
 int main()
 {
 	if (!OpenSQLiteDB(DB_FILENAME))
